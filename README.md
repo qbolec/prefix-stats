@@ -32,23 +32,31 @@ This could be summarized as
 
 and could be easily achieved by running 
 
-    sort input | prefix-stats -d ' ' -l 3 
+    sort input | ./prefix-stats lower_bound=2 
 
 Details
 -------
 Input provided to the prefix-stats should be sorted. I would write "must" instead of "should", but it wouldn't be entirely true -- 
-a weaker property is required, namely that if X is a longest common prefix of any two lines, then it is also a prefix of all lines between them.
-This means that you should be able to run it on a recursive directory listing no matter how directories are sorted on each level, for example.
+a weaker property is required, namely that if X is the longest common prefix of any two lines, then it is also a prefix of all lines between them.
+For example, this implies that you should be able to run prefix-stats on a recursive directory listing no matter how directories are sorted on each level.
 Basically, this property makes sure that the input file describes a DFS traversal of the Trie, and thus the program does not have to
 build the whole Trie in memory (which would be impractical) but just the path from the root to the current node, and can produce output
 line-by-line whenever the DFS makes step upward.
 
-Each line should contain key and pair separated by the delimiter, which defaults to \t, and can be changed using -d option.
+Each line should contain key and pair separated by the delimiter, which defaults to any whitespace sequence, and can be changed using `FS` variable, 
+as usual for AWK programs. For example to use the tool on comma separated values, use 
+
+    sort input.csv | ./prefix-stats FS=";"
 
 If a line does not contain a value it is assumed to have value 1, which makes it easier to use this tool for a single column files.
 
-The format of output is affected by other options:
-* `-s` SEP specifies separator used in output to be SEP instead of the one used in the input
-* `-l` LOWERBOUND suppresses output of nodes which have cummulative value lower than LOWERBOUND, by default 1
-* `-v` activates verbose mode, in which nodes which have only a single non-zero child are also reported (for example node "/us" and "/use")
+The format of output is affected by other variables:
+* `IFS` specifies separator used in output, defaults to a single space
+* `lower_bound` suppresses output of nodes which have cummulative value lower than `lower_bound`, by default 1
+* `verbose` activates verbose mode if set to 1, in which nodes which have only a single non-zero child are also reported (for example node "/us" and "/use")
 
+For example:
+    
+    sort input.csv | ./prefix-stats FS=";' OFS=";" verbose=1 lower_bound=10
+
+will output comma separated list of all nodes in the tree (including parents of single nodes) which have cummulative sum greater than 10

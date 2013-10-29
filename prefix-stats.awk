@@ -8,12 +8,10 @@ BEGIN {
 function pop(to){
   first = 1
   while(to<text_stack_len){
-    if (first || last_value != values_stack[text_stack_len]) {
-      if (first)
-        print text_stack, values_stack[text_stack_len]
-      else
-        print text_stack ".*", values_stack[text_stack_len]
-    }
+    if (verbose || first || last_value != values_stack[text_stack_len]) 
+      if (lower_bound < values_stack[text_stack_len])
+        print text_stack (first?"":".*"), values_stack[text_stack_len]
+    
 
     last_value = values_stack[text_stack_len]
     first = 0
