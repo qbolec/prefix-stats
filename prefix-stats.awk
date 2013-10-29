@@ -24,7 +24,7 @@ function pop(to){
       
       {
   key = $1
-  value = $2
+  value = NF>1?$2:1
 
   #find LCA
   lcp = 0

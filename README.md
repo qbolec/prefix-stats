@@ -59,4 +59,33 @@ For example:
     
     sort input.csv | ./prefix-stats FS=";' OFS=";" verbose=1 lower_bound=10
 
-will output comma separated list of all nodes in the tree (including parents of single nodes) which have cummulative sum greater than 10
+will output comma separated list of all nodes in the tree (including parents of single nodes) which have cummulative sum greater than 10.
+
+Another (more useful?) example, which reports directories which use more than 20 blocks of space:
+
+    $ du  --max-depth=4 | awk '{print $2,$1}' | prefix-stats.awk lower_bound=20
+    ./.subversion 32
+    ./.subversion.* 48
+    ./.s.* 49
+    ./..* 50
+    ./prefix_stats/.git/hooks 31
+    ./prefix_stats/.git/objects 24
+    ./prefix_stats/.git/objects.* 44
+    ./prefix_stats/.git/.* 85
+    ./prefix_stats/.git 70
+    ./prefix_stats/.git.* 155
+    ./prefix_stats 84
+    ./prefix_stats.* 239
+    ./sc2/.git/hooks 31
+    ./sc2/.git/objects/.* 23
+    ./sc2/.git/objects 27
+    ./sc2/.git/objects.* 50
+    ./sc2/.git/.* 91
+    ./sc2/.git 73
+    ./sc2/.git.* 164
+    ./sc2 149
+    ./sc2.* 313
+    ./.* 602
+    . 351
+    ..* 953
+
