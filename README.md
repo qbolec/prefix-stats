@@ -51,7 +51,7 @@ as usual for AWK programs. For example to use the tool on comma separated values
 If a line does not contain a value it is assumed to have value 1, which makes it easier to use this tool for a single column files.
 
 The format of output is affected by other variables:
-* `IFS` specifies separator used in output, defaults to a single space
+* `OFS` specifies separator used in output, defaults to a single space
 * `lower_bound` suppresses output of nodes which have cummulative value lower than `lower_bound`, by default 1
 * `verbose` activates verbose mode if set to 1, in which nodes which have only a single non-zero child are also reported (for example node "/us" and "/use")
 
